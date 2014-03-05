@@ -1,0 +1,12 @@
+
+section article{
+	text-align: center;
+}
+
+section article h1{
+	font-size: 48px;
+}
+
+section article h2{
+	font-size: 28px;
+}

@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>teste</title>
+	<script>
+		if(!window.WebSocket){
+        	alert('Browser não suporta websocket');
+ 
+       		return null;
+    	}else{
+    		alert("Browser suporta WebSocket");
+    	}
+    	
+		alert("teste!");
+	</script>
+</head>
+<body>
+	Hello World!!!
+</body>
+</html>

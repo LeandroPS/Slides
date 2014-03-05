@@ -1,0 +1,337 @@
+var conectado = false;
+/*
+
+if(!window.WebSocket){
+	alert('Browser não suporta websocket');
+}
+    	
+//var connection = new  WebSocket('ws://10.0.0.100:8000');//Eywa
+//var connection = new  WebSocket('ws://192.168.43.175:8000');
+//var connection = new  WebSocket('ws://10.19.11.10:8000');//IFF-acesso -livre
+var connection = new  WebSocket('ws://10.0.0.100:8000');
+//var connection = new  WebSocket('ws://10.12.10.205:8000');
+//var connection = new  WebSocket('ws://192.168.43.56:8000');
+
+
+connection.onopen = function (openEvent)
+{
+    //alert('onopen');
+    console.log(openEvent);
+    var indx = $("section > article:visible").index();
+    masterRequest = JSON.stringify({"tipo":"id", "id":"master", "indx": indx});
+    //alert(masterRequest);
+    connection.send(masterRequest);
+    //console.log("enviou");
+};
+		
+connection.onclose = function (closeEvent)
+{
+    //alert('onclose');
+    //console.log(closeEvent);
+}
+connection.onerror = function (errorEvent)
+{
+    alert('onerror');
+    //console.log(errorEvent);
+};
+connection.onmessage = function (messageEvent)
+{
+    //alert('onmessage');
+    //console.log(messageEvent);
+    //connection.send("teste");
+    
+    m = JSON.parse(messageEvent.data);
+    
+    
+	if(m.tipo == "comando"){
+		if(m.comando == "avancar"){
+			pxm();
+			console.log("Avancando slides");
+		}else if(m.comando == "voltar"){
+			ant();
+			console.log("voltando slides");
+		}else if(m.comando == "irPara"){
+			console.log("irpara");
+			irPara(m.indx);
+		}
+	}
+};
+
+*/
+
+function touchHandler(event)
+{
+    var touches = event.changedTouches,
+        first = touches[0],
+        type = "";
+        switch(event.type)
+    	{
+        	case "touchstart": type = "mousedown"; break;
+        	case "touchmove":  type="mousemove"; break;        
+        	case "touchend":   type="mouseup"; break;
+        	default: return;
+    	}
+
+             //initMouseEvent(type, canBubble, cancelable, view, clickCount, 
+    //           screenX, screenY, clientX, clientY, ctrlKey, 
+    //           altKey, shiftKey, metaKey, button, relatedTarget);
+
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent(type, true, true, window, 1, 
+                              first.screenX, first.screenY, 
+                              first.clientX, first.clientY, false, 
+                              false, false, false, 0/*left*/, null);
+
+                                                                                 first.target.dispatchEvent(simulatedEvent);
+    event.preventDefault();
+}
+
+$(function(){
+	
+	var desenho = false;
+	var paleta = false;
+	var ctx = [];
+	var desenhando = false;
+	cor = "#000000";
+    
+    $("div.tudo").append('<button class="nav ant"></button><button class="nav pxm"></button><button class="lapis"></button><button class="full cima_direita"></button><button class="escolhe-cor"></button><div class="paleta"><div class="cor-atual"></div><button class="btn-cor preto"><button class="btn-cor branco"><button class="btn-cor vermelho"><button class="btn-cor azul"><button class="btn-cor verde"></div>');
+    	
+    	$("input.fechar").click(function(){
+			$("div.caixa-conexao").hide();
+		});
+    	/////
+    	$("div.caixa-conexao input.conectar").click(function(){
+    		ip = $("input.ip").val();
+    		$('input.conectar').attr('value', 'conectando...');
+    		
+      		if(!window.WebSocket){
+				alert('Browser não suporta websocket');
+			}
+		    	
+			//var connection = new  WebSocket('ws://10.0.0.100:8001');//Eywa
+			//var connection = new  WebSocket('ws://192.168.43.175:8001');
+			//var connection = new  WebSocket('ws://10.19.11.10:8001');//IFF-acesso -livre
+			//var connection = new  WebSocket('ws://127.0.0.1:8000');
+			//var connection = new  WebSocket('ws://10.12.10.205:8000');
+			//var connection = new  WebSocket('ws://192.168.43.56:8000');
+		
+			connection = new  WebSocket("ws://"+ip+":8000");
+		
+			connection.onopen = function (openEvent)
+			{
+				$('input.conectar').attr('value', 'conectado!!!');
+			    //alert('onopen');
+			    console.log(openEvent);
+			    var indx = $("section > article:visible").index();
+			    masterRequest = JSON.stringify({"tipo":"id", "id":"master", "indx": indx});
+			    //alert(masterRequest);
+			    connection.send(masterRequest);
+			    //console.log("enviou");
+		    
+			    conectado = true;
+			};
+				
+			connection.onclose = function (closeEvent)
+			{
+			    //alert('onclose');
+			    //console.log(closeEvent);
+			}
+			connection.onerror = function (errorEvent)
+			{
+			    alert('onerror');
+			    //console.log(errorEvent);
+			};
+			connection.onmessage = function (messageEvent)
+			{
+			    //alert('onmessage');
+			    //console.log(messageEvent);
+			    //connection.send("teste");
+			    
+			    m = JSON.parse(messageEvent.data);
+		    
+    	
+				if(m.tipo == "comando"){
+					if(m.comando == "avancar"){
+						pxm();
+						console.log("Avancando slides");
+					}else if(m.comando == "voltar"){
+						ant();
+						console.log("voltando slides");
+					}else if(m.comando == "irPara"){
+						console.log("irpara");
+						irPara(m.indx);
+					}
+				}
+			};  		
+    			
+    			//alert(ip);
+    	});
+	///
+	
+		$("button.ant").click(function(){
+		
+			if($("section > article:visible").index() > 0){
+				//try{
+					connection.send('{"tipo":"comando", "comando":"voltar"}');
+					console.log("Voltar");				
+				//}catch(e){
+				//	console.log("Ops...");
+				//}
+			}
+			
+			ant();
+		
+		});
+	
+		$("button.pxm").click(function(){
+		
+			//alert("pxm");
+		
+			if($("section > article:visible").index() < $("section > article").length-1){
+				//try{
+					console.log("Oi - av");
+					connection.send('{"tipo":"comando", "comando":"avancar"}');
+					console.log("Avancar");
+				//}catch(e){
+				//	console.log("Ops...");
+				//}
+			}
+			
+			pxm();
+		
+		});
+	
+	$("button.lapis").click(function(){
+		if(!desenho){
+			desenho = true;
+		
+			$(this).css({'background-color': '#779', 'box-shadow': '0px 0px 6px 1px #779'});
+			$("section aticle canvas.quadro").css({'z-index': '6'});
+			
+			$('button.escolhe-cor, div.paleta').animate({'bottom':'+=20px'}, 500);
+		}else{
+			desenho = false;
+			
+			$("section aticle canvas.quadro").css({'z-index': '4'});
+		
+			$(this).css({'background-color': 'transparent', 'box-shadow': 'none'});
+			if(paleta){
+				//$('button.escolhe-cor').animate({'bottom':'-20px'}, 500);
+				$('button.escolhe-cor, div.paleta').animate({'bottom':'-=121px'}, 500);
+			}else{
+				$('button.escolhe-cor, div.paleta').animate({'bottom':'-=20px'}, 500);
+			}
+		}
+		
+	});
+	
+	$("button.escolhe-cor").click(function(){
+		if(!paleta){
+			$('button.escolhe-cor, div.paleta').animate({'bottom':'+=101px'}, 500);
+			paleta = true;
+		}else{
+			$('button.escolhe-cor, div.paleta').animate({'bottom':'-=101px'}, 500);
+			paleta = false;
+		}
+	});
+	
+	$("button.btn-cor").click(function(){
+		cor = $(this).css('background-color');
+		$("div.paleta div.cor-atual").css('background-color', cor);
+		$('button.escolhe-cor, div.paleta').animate({'bottom':'-=101px'}, 500);
+		paleta = false;
+		//alert(cor);
+	});
+
+	/*document.addEventListener("touchstart", touchHandler, true);
+    document.addEventListener("touchmove", touchHandler, true);
+    document.addEventListener("touchend", touchHandler, true);
+    document.addEventListener("touchcancel", touchHandler, true);  
+	*/
+	
+	$("section > article video").each(function(index){
+		this.volume = 0;
+		this.addEventListener("play", function(){
+			connection.send(JSON.stringify({ "tipo": "comando", "comando":"play", "index": index}));
+		});
+	});
+	
+	$("section > article").append("<canvas class='quadro'></canvas>");
+	$("section > article > canvas.quadro").each(function(index){
+		this.setAttribute("width", 800);
+		this.setAttribute("height", 600);
+		
+		this.addEventListener("touchstart", touchHandler, true);
+    	this.addEventListener("touchmove", touchHandler, true);
+    	this.addEventListener("touchend", touchHandler, true);
+    	this.addEventListener("touchcancel", touchHandler, true); 
+		
+		ctx[index] = this.getContext("2d");
+		ctx[index].lineCap = 'round';
+		ctx[index].lineWidth = 2;
+		
+		
+		this.onmousedown = function (evt) {	
+		    ctx[index].moveTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+		    ctx[index].beginPath();
+		    ctx[index].strokeStyle = cor;
+		    
+		    
+		    //if(conectado){
+		    connection.send(JSON.stringify({ "tipo": "comando", "comando":"pressionar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top, "cor": cor}));
+		    
+		    //}
+	    	desenhando = true;
+		}
+		
+		this.onmouseup = function () {
+    		desenhando = false;               
+		}
+		
+		this.onmousemove = function (evt) {
+    		if (desenhando && desenho) {
+    			//ctx[index].strokeStyle = cor;
+        		ctx[index].lineTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+        		ctx[index].stroke();
+
+        		/*var image = ctx[index].getImageData(0, 0, 800, 600);
+				var buffer = new ArrayBuffer(image.data.length);
+				var bytes = new Uint8Array(buffer);
+				/*for (var i=0; i<bytes.length; i++) {
+				    //bytes[i] = image.data[i];
+				}*/
+        		//connection.send('{ "tipo": "comando", "comando":"desenhar", "index": "'+index+'", "imagem": "'+buffer+'"}');
+        		
+        		//if(conectado){
+        			connection.send(JSON.stringify({ "tipo": "comando", "comando":"desenhar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top}));
+    			//}
+    		}
+    	}
+    	
+    	/////
+    	
+    	/*
+    	this.ontouchdown = function (evt) {
+		    ctx[index].moveTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+	    	desenhando = true;
+	    	
+	    	ctx[index].beginPath();
+		    ctx[index].strokeStyle = cor;
+	    	
+	    	connection.send(JSON.stringify({ "tipo": "comando", "comando":"pressionar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top, "cor": cor}));
+		}
+		
+		this.ontouchup = function () {
+    		desenhando = false;              
+		}
+		
+		this.ontouchmove = function (evt) {
+    		if (desenhando && desenho) {
+    			ctx[index].strokeStyle = cor;
+        		ctx[index].lineTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+        		ctx[index].stroke();
+    		}
+    	}*/
+
+	});
+});

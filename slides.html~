@@ -1,0 +1,96 @@
+<!Doctype html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	<meta charset="utf8">
+	<title>Título dos Slides</title>
+	<link rel="stylesheet" href="css/slides.css">
+	<link rel="stylesheet" href="css/templates/basic.css">
+	<link rel="stylesheet" href="css/templates/this.css">
+	<script src="js/jquery.js"></script>
+	<script src="js/slides.js"></script>
+	<script src="js/master.js"></script>
+</head>
+<body>
+<div class="tudo">
+	<section>
+		<article class="titulo_e_subtitulo">
+			<h1>Título</h1>
+			<h2>Subtítulo</h2>
+		</article>
+		<article>
+			<h1>Outro título</h1>
+			<p>
+				Por enquanto dá pra fazer quase tudo que poderia ser feito com Slides comuns...
+			</p>
+		</article>
+		<!--
+		<article>
+			<h1>listas</h1>
+			<p>
+				Por exemplo uma lista de coisas ou tópicos...
+				<ul>
+					<li>Primeiro elemento</li>
+					<li>Segundo elemento</li>
+					<li>Terceiro elemento</li>
+					<li>Enfim, já está ficando chato...</li>
+				</ul>
+			<p>
+		</article>
+		<article>
+			<h1>Imagens</h1>
+			<p>
+			Adicionar imagens com ou sem legendas...
+			
+				
+					<img src="imagens/this/perry.jpg">
+					
+					<fgcaption>Ai de quem disser que é um Angry Bird...</fgcaption>
+				
+			
+			</p>
+		</article>
+		<article>
+			<h1>Desenho?</h1>
+			<p>
+				Já falei que o apresentador pode rabiscar os slides? pois bem, tente clicando ou tocando o ícone caneta e depois rabiscando em qualquer lugar do slide...
+			</p>
+			<p>
+				você pode ainda alterar a cor da "caneta" clicando na paleta de cores que aparecerá no canto inferior direito quando a "caneta" estiver ativa...
+			</p>
+		</article>
+		<article>
+			<h1>
+				Indo pegar meu balde de pipoca
+			</h1>
+			<h2>
+				Sério, eu amo pipoca...
+			</h2>
+			<p>
+				Através da tag video do HTML5 é possível adicionar vídeos à página
+			
+				<video src="videos/300.mp4" controls></video>
+			</p>
+			
+		</article>
+		-->
+	</section>
+	<!--
+	<button class="nav ant"></button>
+	<button class="nav pxm"></button>
+	<button class="lapis"></button>
+	<button class="full cima_direita"></button>
+	<button class="escolhe-cor"></button>
+	<div class="paleta">
+		<div class="cor-atual"></div>
+		<button class="btn-cor preto">
+		<button class="btn-cor branco">
+		<button class="btn-cor vermelho">
+		<button class="btn-cor azul">
+		<button class="btn-cor verde">
+		
+	</div>
+    -->
+</div>
+</body>
+</html>

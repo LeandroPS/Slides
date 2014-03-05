@@ -1,0 +1,46 @@
+<html>
+<head>
+	<title>teste</title>
+	<script>
+		if(!window.WebSocket){
+        	alert('Browser não suporta websocket');
+ 
+       		//return null;
+    	}else{
+    		alert("Browser suporta WebSocket");
+    	}
+    	
+    	var connection = new  WebSocket('ws://10.0.0.100:8001');
+    	
+    	connection.onopen = function (openEvent)
+		{
+		    alert('onopen');
+		    //console.log(openEvent);
+		    connection.send("teste");
+		    //console.log("enviou");
+		};
+		
+		connection.onclose = function (closeEvent)
+		{
+		    alert('onclose');
+		    //console.log(closeEvent);
+		}
+		connection.onerror = function (errorEvent)
+		{
+		    alert('onerror');
+		    //console.log(errorEvent);
+		};
+		connection.onmessage = function (messageEvent)
+		{
+		    alert('onmessage');
+		    //console.log(messageEvent);
+		    connection.send("teste");
+		};
+    	
+		alert("teste!");
+	</script>
+</head>
+<body>
+	Hello World!!!
+</body>
+</html>
