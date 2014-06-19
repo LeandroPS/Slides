@@ -25,6 +25,8 @@ function ant(){
 	
 	var indx = $('section > article:visible').index();
 	
+	alert(indx);
+	
 	if(indx>0){ 
 		$('section > article:visible').hide();
 	 
@@ -74,7 +76,7 @@ function full(){
 
 $(function(){
     
-    //$("div.tudo").append("<div class='caixa-conexao'><input type='button' class='fechar'></input><span class='aviso'>Digite abaixo o IP fornecido pelo servidor da apresentação: </span><br/><span class='ws'>ws://</span><input type='text' class='ip'></input><br/><input type='button' value='conectar' class= 'conectar'></input><div class='area-nao-conectar'><a href='#' class='nao-conectar'>Não quero iniciar uma apresentação agora.</a> </div></div>");
+    $("div.tudo").append("<div class='caixa-conexao'><input type='button' class='fechar'></input><span class='aviso'>Digite abaixo o IP fornecido pelo servidor da apresentação: </span><br/><span class='ws'>ws://</span><input type='text' class='ip'></input><br/><input type='button' value='conectar' class= 'conectar'></input><div class='area-nao-conectar'><a href='#' class='nao-conectar'>Não quero iniciar uma apresentação agora.</a> </div></div>");
 	
 	$("button.cima_direita").click(function(){
 		if(f){

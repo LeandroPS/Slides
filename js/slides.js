@@ -25,6 +25,8 @@ function ant(){
 	
 	var indx = $('section > article:visible').index();
 	
+	//alert(indx);
+	
 	if(indx>0){ 
 		$('section > article:visible').hide();
 	 
@@ -74,7 +76,13 @@ function full(){
 
 $(function(){
     
-    $("div.tudo").append("<div class='caixa-conexao'><input type='button' class='fechar'></input><span class='aviso'>Digite abaixo o IP fornecido pelo servidor da apresentação: </span><br/><span class='ws'>ws://</span><input type='text' class='ip'></input><br/><input type='button' value='conectar' class= 'conectar'></input><div class='area-nao-conectar'><a href='#' class='nao-conectar'>Não quero iniciar uma apresentação agora.</a> </div></div>");
+    $("div.tudo").append("<div class='caixa-conexao'><input type='button' class='fechar'></input><p class='aviso'>Digite abaixo o IP fornecido pelo servidor da apresentação: </p><br/><input type='text' class='ip'></input><br/><input type='button' value='Conectar' class= 'conectar'></input><div class='area-nao-conectar'><a href='#' class='nao-conectar'>Não quero iniciar uma apresentação agora.</a> </div></div>");
+    
+    $("div.caixa-conexao").addClass("ativo");
+    
+    $('div.caixa-conexao input.fechar, div.caixa-conexao a.nao-conectar').click(function(){
+        $('div.caixa-conexao').removeClass("ativo");
+    });
 	
 	$("button.cima_direita").click(function(){
 		if(f){
@@ -84,7 +92,15 @@ $(function(){
 		}
 	});
 	
-	
+    /*$(".centralizado").css({
+        'position':'absolute',
+        'top': '50%',
+        'margin-top': '-'+$(this).height()/2+'px',
+        'left': '50%',
+        'margin-left': '-'+$(this).width()/2+'px'
+    });*/
+    
+    //alert($(".centralizado").height());
 	/*
 	$("button.full").click(function(){
 		full();
@@ -95,3 +111,4 @@ $(function(){
 	});
 	*/
 });
+

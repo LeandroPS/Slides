@@ -1,7 +1,11 @@
 var ctx = [];
+var connection;
 
 $(function(){
 	$("section > article").append("<canvas class='quadro'></canvas>");
+    
+    $("div.tudo").append('<button class="btn-painel sup-1 r full">');
+    
 	$("section > article > canvas.quadro").each(function(index){
 		this.setAttribute("width", 800);
 		this.setAttribute("height", 600);
@@ -11,9 +15,13 @@ $(function(){
 		ctx[index].lineWidth = 2;
 		
 	});
-	
+    
+    if($("section article").size() < 1){
+        $("div.tudo").append('<div class="nenhum-slide"><div class="inner-nenhum-slide"><h1>Nenhum slide foi encontrado</h1><h3>Aguarde enquanto o apresentador adiciona slides a esta apresentação</h3></div></div>');
+    }
 	$("input.fechar").click(function(){
-		$("div.caixa-conexao").hide();
+		//$("div.caixa-conexao").hide();
+        $("div.caixa-conexao").removeClass("ativo");
 	});
 	///
 	$("div.caixa-conexao input.conectar").click(function(){
@@ -24,15 +32,7 @@ $(function(){
 			alert('Browser não suporta websocket');
 		}
     	
-    		connection = new  WebSocket("ws://"+ip+":8000");
-    		
-		//var connection = new  WebSocket('ws://10.0.0.100:8001');//Eywa
-		//var connection = new  WebSocket('ws://192.168.43.175:8001');
-		//var connection = new  WebSocket('ws://10.19.11.10:8001');//IFF-acesso -livre
-		//var connection = new  WebSocket('ws://127.0.0.1:8000');
-		//var connection = new  WebSocket('ws://10.12.10.205:8000');
-		//var connection = new  WebSocket('ws://192.168.43.56:8000');
-		//var connection = new  WebSocket();
+    connection = new  WebSocket("ws://"+ip);
     		
 		connection.onopen = function (openEvent)
 		{
@@ -98,88 +98,4 @@ $(function(){
 				
 				
 	});
-	///
 });
-
-/*
-if(!window.WebSocket){
-	alert('Browser não suporta websocket');
-}
-
-alert("oioioi");
-    	
-//var connection = new  WebSocket('ws://10.0.0.100:8001');//Eywa
-//var connection = new  WebSocket('ws://192.168.43.175:8001');
-//var connection = new  WebSocket('ws://10.19.11.10:8001');//IFF-acesso -livre
-//var connection = new  WebSocket('ws://127.0.0.1:8000');
-//var connection = new  WebSocket('ws://10.12.10.205:8000');
-//var connection = new  WebSocket('ws://192.168.43.56:8000');
-var connection = new  WebSocket('ws://10.0.0.100:8000');
-    	
-connection.onopen = function (openEvent)
-{
-    //alert('onopen');
-    //console.log(openEvent);
-    slaveRequest = JSON.stringify({"tipo":"id", "id":"slave"});
-    //alert(slaveRequest);
-    connection.send(slaveRequest);
-    //console.log("enviou");
-};
-		
-connection.onclose = function (closeEvent)
-{
-    //alert('onclose');
-    //console.log(closeEvent);
-}
-connection.onerror = function (errorEvent)
-{
-    alert('onerror');
-    //console.log(errorEvent);
-};
-connection.onmessage = function (messageEvent)
-{
-    //alert('onmessage');
-    console.log(messageEvent);
-    m = JSON.parse(messageEvent.data);
-    
-    
-	if(m.tipo == "comando"){
-		console.log("comando recebido");
-		if(m.comando == "avancar"){
-			pxm();
-			console.log("Avancando slides");
-		}else if(m.comando == "voltar"){
-			ant();
-			console.log("voltando slides");
-		}else if(m.comando == "irPara"){
-			console.log("irpara");
-			irPara(m.indx);
-		}else if(m.comando == "pressionar"){
-			ctx[m.index].moveTo(m.clientX, m.clientY);
-			ctx[m.index].beginPath();
-		    	ctx[m.index].strokeStyle = m.cor;
-		
-		}else if(m.comando == "desenhar"){
-			console.log("desenhando");
-			//var bytes = new Uint8Array(m.imagem);
-			//var image = ctx[m.index].createImageData(800, 600);
-			//for (var i=0; i<bytes.length; i++) {
-			  //  image.data[i] = bytes[i];
-			//}
-			//ctx[m.index].drawImage(image, 0, 0);
-
-			//ctx[m.index] = m.imagem;
-			
-			ctx[m.index].lineTo(m.clientX, m.clientY);
-        		ctx[m.index].stroke();
-		}else if(m.comando == "desenhar"){
-			$("section > article video").index(m.index).get(0).play();
-		}
-	}/*else if(m.tipo == "irPara"){
-		irPara(m.indx);
-	}*/
-    
-   // console.log(messageEvent);
-    //console.log(m);
-    //connection.send("teste");
-//};

@@ -1,11 +1,12 @@
 var http = require('http');
+var p = 8080;
 var httpServer = http.createServer(function (request, response)
 {
     // i see this if i hit http://localhost:8001/
     response.end('go away');
 });
 
-httpServer.listen(8000);
+httpServer.listen(p);
 
 var webSocket = require('websocket');
 var webSocketServer = new webSocket.server({ 'httpServer': httpServer });
@@ -26,7 +27,7 @@ function getIPAddress() {
 }
 
 
-console.log("Este é o IP do servidor desta apresentação: "+getIPAddress()+":8000");
+console.log("Este é o IP do servidor desta apresentação: "+getIPAddress()+":"+p);
 
 var slaves = [];
 var masters = [];

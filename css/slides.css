@@ -1,10 +1,35 @@
+@keyframes box-cima {
+  0%   { 
+    top: -50%;
+	margin-top: -100px;
+  }
+  100% { 
+    top: 50%;
+	margin-top: -100px;
+	left: 50%;
+	margin-left: -165px; 
+  }
+}
+
 body{
+    
+    overflow: hidden;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+    
 	margin: 0 auto;
 	
 	background-color: #161616;
 	
 	background-image: url(../imagens/slides/textura-fundo.png);
 	
+    outline: none;
+    
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    
 	/*position: relative;*/
 	/*overflow: hidden;*/
 	
@@ -27,45 +52,11 @@ input{
 }
 
 div.tudo{
-	overflow: hidden;
+    overflow: hidden;
 	position: absolute;
 	width: 100%;
 	height: 100%;
 }
-
-div.caixa-conexao{
-    width: 300px;
-    /*height: ;*/
-    position: absolute;
-    
-    padding: 15px;
-    
-}
-
-    div.caixa-conexao span.aviso{
-        margin-bottom: 15px;
-    }
-
-    div.caixa-conexao input.ip{
-        border: 1px solid;
-        
-        margin-bottom: 15px;
-    
-        width: 270px;
-        height: 20px;
-        
-    }
-
-    div.caixa-conexao input.conectar{
-        border: 1px solid;
-        
-        background-color: blue;
-    }
-
-    div.caixa-conexao a.nao-conectar{
-    
-    }
-
 
 button.nav{
 	width: 48px;
@@ -96,28 +87,7 @@ button.nav{
 		
 		background-image: url(../imagens/slides/anterior.svg);
 	}
-	
-	button.cima_direita{
-		width: 48px;
-		height: 48px;
-		
-		position: absolute;
-		float: right;
-		
-		top: 10px;
-		right: 10px;
-		
-		background-image: url(../imagens/slides/full.svg);
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: 32px;
-		background-color: transparent;
-	
-		border: none;
-		
-		z-index: 3;
-	}
-	
+
 	button.full{
 		background-image: url(../imagens/slides/full.svg);
 	}
@@ -128,26 +98,11 @@ button.nav{
 	
 	button.lapis{
 		background-image: url(../imagens/slides/lapis.svg);
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: 32px;
-		background-color: transparent;
-		
-		border: none;
-		border-radius: 5px;
-		
-		width: 48px;
-		height: 48px;
-		
-		position: absolute;
-		float: right;
-		
-		right: 7px;
-		top: 68px;
-		
-		z-index: 3;
-		
 	}
+
+    button.voz{
+        background-image: url(../imagens/slides/voz.svg);
+    }
 	
 button.escolhe-cor{
 	width: 100px;
@@ -242,8 +197,9 @@ div.paleta{
 			button.azul{
 				background-color: #0000ff;
 			}
-			
-section article{
+	
+
+section article, div.nenhum-slide{
 	position: absolute;
 	
 	overflow: hidden;
@@ -268,6 +224,50 @@ section article{
 	z-index: 2;
 }
 
+    div.nenhum-slide{
+        border-radius: 0px;
+        border: 3px dashed;
+        display: block;
+        text-align: center;
+        background-color: transparent;
+        color: #fff;
+ 
+    }
+        div.nenhum-slide .inner-nenhum-slide{
+            padding: 50px;
+            
+            position: absolute;
+            top: 50%;
+            margin-top: -170.5px;
+            left: 50%;
+            margin-left: -397px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        div.nenhum-slide h3{
+            color: gray;
+        }
+        div.nenhum-slide button.abrir-pdf {
+            /*width: 170px;
+            height: 50px;*/
+            border: 1px solid;
+            background-color: #111;
+            font-size: 25px;
+            color: #777;
+            height: 45px;
+            width: 250px;
+            
+            margin-top: 50px;
+            
+            border: 1px solid;
+            /*background-color: ;*/ 
+        }
+        
+        .add{
+            display: none;
+            top: -100%;
+            position: absolute;
+        }
+
 	section article:first-child{
 		display: block;
 	}
@@ -278,41 +278,75 @@ section > article > canvas.quadro{
 	top: 0px;
 	left: 0px;
 	/*background-color: grey;*/
-	z-index: 4;
+	z-index: 5;
+}
+
+section > article > .borda-arredondada{
+    border-radius: 5px;
 }
 
 div.tudo div.caixa-conexao{
-	width: 270px;
-	height: 170px;
+	width: 300px;
 	
-	top: 50%;
+	top: 150%;
 	margin-top: -100px;
 	left: 50%;
-	margin-left: -150px;
+	margin-left: -165px;
 	
 	padding: 15px;
 	
 	background-color: white;
 	
 	border: 1px solid;
+    border-radius: 5px;
 	
 	position: absolute;
 	
-	z-index: 5
+	z-index: 5;
+    
+    transition: top 0.5s linear;
 }
+
+    div.tudo div.caixa-conexao.ativo{
+        top: 50%;
+	    margin-top: -100px;
+        
+        transition: top 0.5s linear;
+    }
 
     div.tudo div.caixa-conexao input.fechar{
         position: absolute;
         
         right: 5px;
         top: 5px;
+
+        background-image: url(../imagens/slides/fechar.svg);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 32px;
+		background-color: transparent;
+		
+		border: none;
+		border-radius: 5px;
+		
+		width: 48px;
+		height: 48px;
+		
+		position: absolute;
+		float: right;
+        
+		z-index: 3;
+        
     }
     
-    div.tudo div.caixa-conexao span.aviso{
+    div.tudo div.caixa-conexao p.aviso{
         font-family: arial, sans-serif;
         
-        top: 20px;
+        top: 10px;
+        padding-right: 38px;
         position: relative;
+        
+        text-align: justify;
     }
     
     div.tudo div.caixa-conexao span.ws{
@@ -328,43 +362,99 @@ div.tudo div.caixa-conexao{
         
         color: grey;
     }
-    
+
     div.tudo div.caixa-conexao input.ip{
-        position: relative;
+        width: 100%;
+        margin-bottom: 15px;
         
-        width: 220px;
+        font-family: arial, sans-serif;
         
-        margin-top: 25px;
-        
-        margin-left: 35px;
+        border: 1px solid;
     }
+
     
     div.tudo div.caixa-conexao input.conectar{
         cursor: pointer;
         
-        width: 132px;
-        height: 50px;
+        font-family: arial, sans-serif;
+        
+        width: 49%;
+        margin-right: 1%;
+        
+        height: 42px;
         
         border: 1px solid;
         border-radius: 0px;
         
         color: white;
         
+        background-color: blue;
+        
         position: relative;
         float: left;
+        
+        display: inline
     }
     
     div.tudo div.caixa-conexao div.area-nao-conectar{
-        width: 130px;
-        margin-left: 5px;
-        float: left;
+        width: 49%;
+        margin-left: 1%;
         position: relative;
-        
+        float: left;
     }
     
         div.tudo div.caixa-conexao a.nao-conectar{
             font-family: arial, sans-serif;
             font-size: 10pt;
         }
+
+.btn-painel{
+    width: 48px;
+    height: 48px;
     
-    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 32px;
+	background-color: transparent;
+	
+    border: none;
+    border-radius: 5px;
+		
+    z-index: 3;
+}
+
+.r{
+    position: absolute;
+    float: right;
+    right: 10px;
+}
+
+.l{
+    position: absolute;
+    float: left;
+    left: 10px;
+}
+
+.sup-1{
+    top: 10px;
+}
+
+.sup-2{
+    top: 68px;
+}
+
+.sup-3{
+    top: 108px;
+}
+
+.inf-1{
+    bottom: 10px;
+}
+
+.inf-2{
+    bottom: 68px;
+}
+
+.inf-3{
+    bottom: 108px;
+}

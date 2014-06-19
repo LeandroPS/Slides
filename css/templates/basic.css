@@ -1,6 +1,22 @@
 
 section article.titulo_e_subtitulo{
 	text-align: center;
+    /*
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+ 
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+     
+    display: box;
+    box-orient: vertical;
+    box-pack: center;
+    box-align: center;
+    */
 }
 
     section article.titulo_e_subtitulo h1{
@@ -13,7 +29,7 @@ section article.titulo_e_subtitulo{
 
 section article h1{
     font-size: 28pt;
-    margin-left: 40px;
+    margin: 40px;
     /*top: 40px;*/
     max-width: 720px;
 }

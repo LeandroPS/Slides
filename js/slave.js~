@@ -24,10 +24,10 @@ $(function(){
 			alert('Browser não suporta websocket');
 		}
     	
-    		connection = new  WebSocket("ws://"+ip+":8000");
+    //connection = new  WebSocket("ws://"+ip);
     		
 		//var connection = new  WebSocket('ws://10.0.0.100:8001');//Eywa
-		//var connection = new  WebSocket('ws://192.168.43.175:8001');
+		var connection = new  WebSocket('ws://192.168.43.175:8080');
 		//var connection = new  WebSocket('ws://10.19.11.10:8001');//IFF-acesso -livre
 		//var connection = new  WebSocket('ws://127.0.0.1:8000');
 		//var connection = new  WebSocket('ws://10.12.10.205:8000');
@@ -71,7 +71,7 @@ $(function(){
 					pxm();
 					console.log("Avancando slides");
 				}else if(m.comando == "voltar"){
-					alert("voltando");
+					//alert("voltando");
 					ant();
 					console.log("voltando slides");
 				}else if(m.comando == "irPara"){
