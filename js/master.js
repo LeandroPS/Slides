@@ -1,4 +1,10 @@
 var conectado = false;
+var desenho = false;
+var paleta = false;
+
+var ctx = [];
+var desenhando = false;
+cor = "#000000";
 
 function touchHandler(event)
 {
@@ -38,24 +44,67 @@ function convertDataURIToBinary(dataURI) {
   return array;
 }
 
+
+
 function possibilitaDesenho(){
-        var desenho = false;
-        var paleta = false;
-        var ctx = [];
-        var desenhando = false;
-        cor = "#000000";
+
+    $("section > article > canvas.quadro").each(function(index){
+
+        this.setAttribute("width", 800);
+        this.setAttribute("height", 600);
+
+        this.addEventListener("touchstart", touchHandler, true);
+        this.addEventListener("touchmove", touchHandler, true);
+        this.addEventListener("touchend", touchHandler, true);
+        this.addEventListener("touchcancel", touchHandler, true); 
+
+        ctx[index] = this.getContext("2d");
+        ctx[index].lineCap = 'round';
+        ctx[index].lineWidth = 2;
+
+
+        this.onmousedown = function (evt) {	
+            ctx[index].moveTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+            ctx[index].beginPath();
+            ctx[index].strokeStyle = cor;
+
+            try{
+            connection.send(JSON.stringify({ "tipo": "comando", "comando":"pressionar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top, "cor": cor}));
+            }catch(e){
+                console.log("ops...");
+            }
+
+            desenhando = true;
+        }
+
+        this.onmouseup = function () {
+            desenhando = false;               
+        }
+
+        this.onmousemove = function (evt) {
+            if (desenhando && desenho) {
+                ctx[index].lineTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
+                ctx[index].stroke();
+                try{
+                connection.send(JSON.stringify({ "tipo": "comando", "comando":"desenhar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top}));
+                }catch(e){
+                    console.log("ops...")   
+                }
+            }
+        }
+
+    });
         
-        
-    }
+}
 
 $(function(){
-	
+	/*
 	var desenho = false;
 	var paleta = false;
     
 	var ctx = [];
 	var desenhando = false;
-	cor = "#000000";
+	cor = "#000000";*/
     
     $("input").keyup(function(e){
         e.stopImmediatePropagation();    
@@ -176,120 +225,31 @@ $(function(){
                             canvas.height = viewport.height;
                             canvas.width = viewport.width;
                             
-                            page.render({canvasContext: context, viewport: viewport});
+                            page.render({canvasContext: context, viewport: viewport}).then(function(){
+                                possibilitaDesenho();
+                            });
                             
                             $container = jQuery("<article></article>").css({'width':viewport.width+'px', 'height': viewport.height+'px', 'margin-top':'-'+parseInt(viewport.height)/2+'px', 'margin-left':'-'+parseInt(viewport.width)/2+'px'});
                             $container.append($canvas);
-                            
-                            ///aqui entra
+
                             $desenhos = jQuery("<canvas class='quadro'></canvas>");
-                            /*
-                            $desenhos.each(function(index){
-                                this.setAttribute("width", 800);
-                                this.setAttribute("height", 600);
-
-                                this.addEventListener("touchstart", touchHandler, true);
-                                this.addEventListener("touchmove", touchHandler, true);
-                                this.addEventListener("touchend", touchHandler, true);
-                                this.addEventListener("touchcancel", touchHandler, true); 
-
-                                ctx[index] = this.getContext("2d");
-                                ctx[index].lineCap = 'round';
-                                ctx[index].lineWidth = 2;
-
-
-                                this.onmousedown = function (evt) {	
-                                    ctx[index].moveTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
-                                    ctx[index].beginPath();
-                                    ctx[index].strokeStyle = cor;
-
-                                    try{
-                                    connection.send(JSON.stringify({ "tipo": "comando", "comando":"pressionar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top, "cor": cor}));
-                                    }catch(e){
-                                        console.log("ops...");
-                                    }
-
-                                    desenhando = true;
-                                }
-
-                                this.onmouseup = function () {
-                                    desenhando = false;               
-                                }
-
-                                this.onmousemove = function (evt) {
-                                    if (desenhando && desenho) {
-                                        ctx[index].lineTo(evt.clientX - $(this).offset().left, evt.clientY - $(this).offset().top);
-                                        ctx[index].stroke();
-                                        
-                                        try{
-                                        connection.send(JSON.stringify({ "tipo": "comando", "comando":"desenhar", "index": index, "clientX": evt.clientX - $(this).offset().left, "clientY": evt.clientY - $(this).offset().top}));
-                                        }catch(e){
-                                            console.log("ops...");
-                                        }
-                                    }
-                                }
-                                
-                            });
-                            */
-                            /*
-                            //$("section > article > canvas.quadro").each(function(index){
-                            $desenho = $desenhos.get(0);
-
-                            $desenho.setAttribute("width", viewport.width);
-                            $desenho.setAttribute("height", viewport.height);
-
-                            $desenho.addEventListener("touchstart", touchHandler, true);
-                            $desenho.addEventListener("touchmove", touchHandler, true);
-                            $desenho.addEventListener("touchend", touchHandler, true);
-                            $desenho.addEventListener("touchcancel", touchHandler, true); 
-
-                            ctx[index] = $desenho.getContext("2d");
-                            ctx[index].lineCap = 'round';
-                            ctx[index].lineWidth = 2;
-
-
-                            $desenho.onmousedown = function (evt) {	
-                                ctx[index].moveTo(evt.clientX - $desenhos.offset().left, evt.clientY - $desenhos.offset().top);
-                                ctx[index].beginPath();
-                                ctx[index].strokeStyle = cor;
-                                try{
-                                connection.send(JSON.stringify({ "tipo": "comando", "comando":"pressionar", "index": index, "clientX": evt.clientX - $desenhos.offset().left, "clientY": evt.clientY - $desenhos.offset().top, "cor": cor}));
-                                }catch(e){
-                                    console.log("ops...");
-                                }
-                                desenhando = true;
-                            }
-
-                            $desenho.onmouseup = function () {
-                                desenhando = false;               
-                            }
-
-                            $desenho.onmousemove = function (evt) {
-                                if (desenhando && desenho) {
-
-                                    ctx[index].lineTo(evt.clientX - $desenhos.offset().left, evt.clientY - $desenhos.offset().top);
-                                    ctx[index].stroke();
-
-                                    connection.send(JSON.stringify({ "tipo": "comando", "comando":"desenhar", "index": index, "clientX": evt.clientX - $desenhos.offset().left, "clientY": evt.clientY - $desenhos.offset().top}));
-
-                                }
-                            }
-                            */
-                            //});
-                            ///
                             $container.append($desenhos);
                             $("section").append($container);
                         });
                     }
-                    
+                    ///
+                        //alert($("section > article").size());
+                    //$("section > article").append("<canvas class='quadro'></canvas>");
                     $("section article:first").show();
+                    
                     //possibilitaDesenho();
                     
-                });  
+                });
             }
             
             var f = reader.readAsDataURL(file);
             
+            possibilitaDesenho();
         });
 
         }
@@ -299,7 +259,10 @@ $(function(){
               // Let's define a command.
               var commands = {
                 'avançar': function() { pxm(); },
-                'voltar': function() { ant(); }
+                'próximo': function() { pxm(); },
+                'próximo slide': function() { pxm(); },
+                'voltar': function() { ant(); },
+                'slide anterior': function() { ant(); }
               };
 
               // Add our commands to annyang
@@ -461,10 +424,14 @@ $(function(){
 			connection.send(JSON.stringify({ "tipo": "comando", "comando":"play", "index": index}));
 		});
 	});
-	
-	$("section > article").append("<canvas class='quadro'></canvas>");
-    //possibilitaDesenho();
+	//canvas = jQuery("<canvas class='quadro'></canvas>");
+	//canvas.each(function(index){
+    
+    $("section > article").append("<canvas class='quadro'></canvas>");
+    possibilitaDesenho();
+    /*
     $("section > article > canvas.quadro").each(function(index){
+    
         this.setAttribute("width", 800);
         this.setAttribute("height", 600);
 
@@ -509,5 +476,6 @@ $(function(){
         }
 
     });
+    */
     ///antes disso
 });
